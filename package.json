@@ -1,0 +1,12 @@
+{
+  "name": "qr-server-demo",
+  "version": "1.0.0",
+  "description": "QR Code host server demo",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
