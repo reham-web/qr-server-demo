@@ -1,22 +1,35 @@
 const express = require("express");
+const QRCode = require("qrcode");
+
 const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-app.get("/", (req, res) => {
-  res.send(`
-    <h1>QR Code Host Server</h1>
-    <p>Server is running successfully.</p>
-    <p>This server is used to host QR Code services for restaurants and institutions.</p>
-  `);
-});
+app.get("/", async (req, res) => {
+  const url = req.query.url || "https://google.com";
 
-app.get("/health", (req, res) => {
-  res.json({
-    status: "online",
-    message: "Server is healthy",
-    uptime: process.uptime()
-  });
+  const qrImage = await QRCode.toDataURL(url);
+
+  res.send(`
+    <h1>QR Code Generator</h1>
+
+    <form method="GET">
+      <input
+        type="text"
+        name="url"
+        placeholder="Enter URL"
+        value="${url}"
+        style="width:300px;padding:10px;"
+      />
+      <button type="submit">Generate QR</button>
+    </form>
+
+    <br>
+
+    <img src="${qrImage}" />
+
+    <p><b>URL:</b> ${url}</p>
+  `);
 });
 
 app.listen(PORT, () => {
